@@ -1,3 +1,17 @@
+# Makefile
+### It is assumed that a linux environment is used for running the makefile.
+### To run the make file in the folder run command make from folder
+```
+make
+```
+### Now the individual compiled files are created as cp swap string_reverse binarySeach
+``` 
+now just run using:-
+./swap
+```
+
+
+
 # Q1) cp.c
 ### Inputs
 * first enter the path of the file where to read from.

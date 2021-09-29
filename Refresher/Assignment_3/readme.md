@@ -1,3 +1,15 @@
+# Makefile
+### It is assumed that a linux environment is used for running the makefile.
+### To run the make file in the folder run command make from folder
+```
+make
+```
+### Now the individual compiled files are created as sort Balanced_BST BST_insert
+``` 
+now just run using:-
+./sort
+```
+
 # Q1) calendar.sh
 ### Input
 * we need to supply the date in space seperated fashion to run the script

@@ -11,7 +11,6 @@ int main()
     arrOut[3] = (int *)calloc(3, sizeof(int));
     arrOut[4] = (int *)calloc(7, sizeof(int));
     arrOut[5] = (int *)calloc(2, sizeof(int));
-    printf("%d size \n", sizeof(arrOut[0]));
     srand(time(NULL));
     for (int i = 0; i < 7; i++)
     {

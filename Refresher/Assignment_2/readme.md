@@ -1,3 +1,17 @@
+# Makefile
+### It is assumed that a linux environment is used for running the makefile.
+### To run the make file in the folder run command make from folder
+```
+make
+```
+### Now the individual compiled files are created as doublyLinked funcPointArr linkedList matrix rowChange sort 
+``` 
+now just run using:-
+./swap
+```
+
+
+
 # Q1 a) matrix.c
 ### inputs
 * To create a matrix shown in the image , I have hardcoded the values and no input is required.

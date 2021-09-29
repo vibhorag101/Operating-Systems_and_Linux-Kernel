@@ -1,7 +1,6 @@
 #include <stdio.h>
 int binarySeach(int arr[], int n, int size)
 {
-    printf("the size of the array is %d\n",sizeof(*arr) / sizeof(arr[0]));
     int low = 0;
     int high = size - 1;
 
