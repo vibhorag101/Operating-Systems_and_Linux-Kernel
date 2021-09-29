@@ -1,5 +1,3 @@
-// A simple C program to introduce
-// a linked list
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -38,7 +36,6 @@ int main()
     struct Node *second = NULL;
     struct Node *third = NULL;
 
-    // allocate 3 nodes in the heap
     head = (struct Node *)malloc(sizeof(struct Node));
     second = (struct Node *)malloc(sizeof(struct Node));
     third = (struct Node *)malloc(sizeof(struct Node));
@@ -47,10 +44,10 @@ int main()
     head->roll = 1;
     head->year = 2020;
     strcpy(head->course, "CSAM");
-    head->next = second; // Link first node with
+    head->next = second;
     head->prev = NULL;
 
-    // assign data to second node
+
     strcpy(second->name, "Bruce Banner");
     second->roll = 2;
     second->year = 2020;

@@ -42,7 +42,7 @@ int main()
     second = (struct Node *)malloc(sizeof(struct Node));
     third = (struct Node *)malloc(sizeof(struct Node));
 
-    strcpy(head->name, "Steve Smith");
+    strcpy(head->name, "Steve Rogers");
     head->roll = 1;
     head->year = 2020;
     strcpy(head->course, "CSAM");

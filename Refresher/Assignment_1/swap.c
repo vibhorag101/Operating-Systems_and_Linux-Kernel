@@ -66,7 +66,7 @@ int main()
         int a, b;
         printf("enter first integer\n");
         scanf("%d", &a);
-        printf("enter first integer\n");
+        printf("enter second integer\n");
         scanf("%d", &b);
         printf("value of a before swap is ");
         printf("%d\n", a);

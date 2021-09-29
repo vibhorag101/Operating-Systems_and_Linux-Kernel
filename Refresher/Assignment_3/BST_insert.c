@@ -37,7 +37,7 @@ struct node* insert(struct node* node, int key)
 	return node;
 }
 
-struct node* minValueNode(struct node* node)
+struct node* minNode(struct node* node)
 {
     struct node* current = node;
 
@@ -70,7 +70,7 @@ struct node* deleteNode(struct node* root, int key)
             return temp;
         }
 
-        struct node* temp = minValueNode(root->right);
+        struct node* temp = minNode(root->right);
 
         root->key = temp->key;
  
@@ -89,10 +89,9 @@ int main()
 	insert(root, 70);
 	insert(root, 60);
 	insert(root, 80);
-
+    printf("Inorder traversal of the tree \n");
 	inorder(root);
 
-    
     printf("\nDelete 70\n");
     root = deleteNode(root, 70);
     printf("Inorder traversal of the modified tree \n");
