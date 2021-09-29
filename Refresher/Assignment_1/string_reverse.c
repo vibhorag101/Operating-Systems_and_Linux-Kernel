@@ -29,15 +29,19 @@ void reverse(char *str, int size)
 }
 int main()
 {
+    printf("enter the string\n");
     char str[100];
-    scanf("%s", str);
+    // scanf("%s", str);
+    fgets(str,100,stdin);
     printf("original string is ");
-    printf("%s", str);
+    // printf("%s", str);
+    puts(str);
     printf("\n");
     int size = sizeStr(str);
     reverse(str, size);
     printf("reversed string is ");
-    printf("%s", str);
+    // printf("%s", str);
+    puts(str);
     printf("\n");
     return 0;
 }

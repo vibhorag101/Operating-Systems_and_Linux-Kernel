@@ -1,5 +1,5 @@
 #include <stdio.h>
-int binarySeach(int arr[], int n, int size)
+int binarySeach(unsigned int arr[], int n, int size)
 {
     int low = 0;
     int high = size - 1;
@@ -27,7 +27,7 @@ int main()
     int n, search;
     printf("enter the number of elements in the array\n");
     scanf("%d", &n);
-    int arr[n];
+    unsigned int arr[n];
     printf("enter the elements of the array\n");
     for (int i = 0; i < n; i++)
     {
