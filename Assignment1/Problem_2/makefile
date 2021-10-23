@@ -14,4 +14,4 @@ funcC.o: funcC.c
 	gcc -c funcC.c
 
 clean:
-	rm *.o
+	$(RM) main main.o funcA.o funcB.o funcC.o
