@@ -80,14 +80,14 @@ end:;
         sprintf(assignmentAVStr[i], "%0.2f", averageArrSecA[i]);
     }
 
-    // for (int i = 0; i < 6; ++i)
-    // {
-    //     printf("The Section A average of Assignment ");
-    //     printf("%d ", i + 1);
-    //     printf("is ");
-    //     printf("%s", assignmentAVStr[i]);
-    //     printf("\n");
-    // }
+    for (int i = 0; i < 6; ++i)
+    {
+        printf("The Section A average of Assignment ");
+        printf("%d ", i + 1);
+        printf("is ");
+        printf("%s", assignmentAVStr[i]);
+        printf("\n");
+    }
     char newLine[10] = "\n";
     char comma[20] = ",";
     char Section[90] = "Section,Assignment 1,Assignment 2,Assignment 3,Assignment 4,Assignment 5,Assignment 6\nA,";
@@ -172,14 +172,14 @@ end:;
         sprintf(assignmentAVStr[i], "%0.2f", averageArrSecB[i]);
     }
 
-    // for (int i = 0; i < 6; ++i)
-    // {
-    //     printf("The Section B average of Assignment ");
-    //     printf("%d ", i + 1);
-    //     printf("is ");
-    //     printf("%s", assignmentAVStr[i]);
-    //     printf("\n");
-    // }
+    for (int i = 0; i < 6; ++i)
+    {
+        printf("The Section B average of Assignment ");
+        printf("%d ", i + 1);
+        printf("is ");
+        printf("%s", assignmentAVStr[i]);
+        printf("\n");
+    }
 
     char newLine[10] = "\n";
     char comma[20] = ",";
@@ -207,9 +207,9 @@ int main()
     pthread_t childThread;
     // the child thread calculates the average for the section B
     //parent thread does the same for section A.
-    pthread_create(&childThread, NULL, &getAverageSectionB, (void *)strB);
+    pthread_create(&childThread, NULL, &getAverageSectionA, (void *)strA);
     pthread_join(childThread, NULL);
-    getAverageSectionA((void *)strA);
+    getAverageSectionB((void *)strB);
 
     for (int i = 0; i < 6; i++)
     {
@@ -227,12 +227,20 @@ int main()
         strcat(strC, assignmentCombinedAVStr[i]);
         strcat(strC, comma);
     }
+    for (int i = 0; i < 6; ++i)
+    {
+        printf("The Comined average of Assignment ");
+        printf("%d ", i + 1);
+        printf("is ");
+        printf("%s", assignmentCombinedAVStr[i]);
+        printf("\n");
+    }
 
     strcat(strC, assignmentCombinedAVStr[5]);
     strcat(strC, newLine);
     write(newFile, strA, strlen(strA));
     write(newFile, strB, strlen(strB));
     write(newFile, strC, strlen(strC));
-    
+
     printf("Averages written to average.csv file newly created\n");
 }

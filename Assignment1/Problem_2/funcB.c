@@ -21,20 +21,11 @@ void funcB(char binString[100]){
     {
         strncpy(octalStrings[i], &binString[i * 8], 8);
     }
-        for (int i = 0; i < 8; i++)
-    {
-        printf("octalStrings %s\n",octalStrings[i]);
-    }
 
     for (int j = 0; j < 8; j++)
     {
         charBin[j] = strtol(octalStrings[j], &ptrTemp, 2);
     }
-    for (int i = 0; i < 8; i++)
-    {
-        printf("charBin %d\n",charBin[i]);
-    }
-    
     charBin[8] =10;
     register char *arg2 asm("rsi") = charBin;
     asm("mov $1, %rax; mov $1, %rdi; mov $14, %rdx; syscall;");

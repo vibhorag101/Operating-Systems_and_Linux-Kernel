@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-# include <string.h>
+#include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
 
-void getAverageSectionA(char *strA) {
+void getAverageSectionA(char *strA)
+{
     char *endPtr;
     char myBuf[100];
     int assignmentSum[100];
@@ -24,58 +25,72 @@ void getAverageSectionA(char *strA) {
 
     openFile = open("student_record.csv", O_RDWR);
     int rowCounter = 0;
-    while (1) {
-        while (1) {
+    while (1)
+    {
+        while (1)
+        {
             readerByte = read(openFile, myBuf, 1);
-            if (readerByte == 0) {
+            if (readerByte == 0)
+            {
                 goto end;
-            } else if (myBuf[0] == '\n') {
+            }
+            else if (myBuf[0] == '\n')
+            {
                 break;
-            } else {
+            }
+            else
+            {
                 strcat(dataStrLine[rowCounter], myBuf);
             }
         }
         rowCounter++;
     }
-    end:;
+end:;
 
-    for (int i = 1; i < rowCounter; ++i) {
+    for (int i = 1; i < rowCounter; ++i)
+    {
         char tokenData[100][100];
         char *token = strtok(dataStrLine[i], delim);
         int tokenCounter = 0;
-        while (token != NULL) {
+        while (token != NULL)
+        {
             strcpy(tokenData[tokenCounter], token);
             token = strtok(NULL, delim);
             tokenCounter++;
         }
-        if (strcmp(tokenData[1], sectionA) == 0) {
+        if (strcmp(tokenData[1], sectionA) == 0)
+        {
             sectionACount++;
-            for (int j = 0; j < 6; ++j) {
-                assignmentSum[j] += (int) strtol(tokenData[j + 2], &endPtr, 10);
+            for (int j = 0; j < 6; ++j)
+            {
+                assignmentSum[j] += (int)strtol(tokenData[j + 2], &endPtr, 10);
             }
         }
-
     }
     float averageArr[10];
-    for (int i = 0; i < 6; ++i) {
-        averageArr[i] = (float) assignmentSum[i] / (float) (sectionACount);
+    for (int i = 0; i < 6; ++i)
+    {
+        averageArr[i] = (float)assignmentSum[i] / (float)(sectionACount);
     }
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < 6; ++i)
+    {
         sprintf(assignmentAVStr[i], "%0.2f", averageArr[i]);
     }
 
-    // for (int i = 0; i < 6; ++i) {
-    //     printf("The Section A average of Assignment ");
-    //     printf("%d ", i + 1);
-    //     printf("is ");
-    //     printf("%s", assignmentAVStr[i]);
-    //     printf("\n");
-    // }
+    for (int i = 0; i < 6; ++i)
+    {
+        printf("The Section A average of Assignment ");
+        printf("%d ", i + 1);
+        printf("is ");
+        printf("%s", assignmentAVStr[i]);
+        printf("\n");
+    }
     char newLine[10] = "\n";
     char comma[20] = ",";
     char Section[90] = "Section,Assignment 1,Assignment 2,Assignment 3,Assignment 4,Assignment 5,Assignment 6\nA,";
     strcat(strA, Section);
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 5; ++i)
+    {
         strcat(strA, assignmentAVStr[i]);
         strcat(strA, comma);
     }
@@ -83,7 +98,8 @@ void getAverageSectionA(char *strA) {
     strcat(strA, newLine);
 }
 
-void getAverageSectionB(char *strB) {
+void getAverageSectionB(char *strB)
+{
     char *endPtr;
     char myBuf[100];
     int assignmentSum[100];
@@ -99,82 +115,99 @@ void getAverageSectionB(char *strB) {
 
     openFile = open("student_record.csv", O_RDWR);
     int rowCounter = 0;
-    while (1) {
-        while (1) {
+    while (1)
+    {
+        while (1)
+        {
             readerByte = read(openFile, myBuf, 1);
-            if (readerByte == 0) {
+            if (readerByte == 0)
+            {
                 goto end;
-            } else if (myBuf[0] == '\n') {
+            }
+            else if (myBuf[0] == '\n')
+            {
                 break;
-            } else {
+            }
+            else
+            {
                 strcat(dataStrLine[rowCounter], myBuf);
             }
         }
         rowCounter++;
     }
-    end:;
+end:;
 
-    for (int i = 1; i < rowCounter; ++i) {
+    for (int i = 1; i < rowCounter; ++i)
+    {
         char tokenData[100][100];
         char *token = strtok(dataStrLine[i], delim);
         int tokenCounter = 0;
-        while (token != NULL) {
+        while (token != NULL)
+        {
             strcpy(tokenData[tokenCounter], token);
             token = strtok(NULL, delim);
             tokenCounter++;
         }
-        if (strcmp(tokenData[1], sectionB) == 0) {
+        if (strcmp(tokenData[1], sectionB) == 0)
+        {
             sectionACount++;
-            for (int j = 0; j < 6; ++j) {
-                assignmentSum[j] += (int) strtol(tokenData[j + 2], &endPtr, 10);
+            for (int j = 0; j < 6; ++j)
+            {
+                assignmentSum[j] += (int)strtol(tokenData[j + 2], &endPtr, 10);
             }
         }
-
     }
     float averageArr[10];
-    for (int i = 0; i < 6; ++i) {
-        averageArr[i] = (float) assignmentSum[i] / (float) (sectionACount);
+    for (int i = 0; i < 6; ++i)
+    {
+        averageArr[i] = (float)assignmentSum[i] / (float)(sectionACount);
     }
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < 6; ++i)
+    {
         sprintf(assignmentAVStr[i], "%0.2f", averageArr[i]);
     }
 
-    // for (int i = 0; i < 6; ++i) {
-    //     printf("The Section B average of Assignment ");
-    //     printf("%d ", i + 1);
-    //     printf("is ");
-    //     printf("%s", assignmentAVStr[i]);
-    //     printf("\n");
-    // }
+    for (int i = 0; i < 6; ++i)
+    {
+        printf("The Section B average of Assignment ");
+        printf("%d ", i + 1);
+        printf("is ");
+        printf("%s", assignmentAVStr[i]);
+        printf("\n");
+    }
 
     char newLine[10] = "\n";
     char comma[20] = ",";
     strcat(strB, "B,");
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 5; ++i)
+    {
         strcat(strB, assignmentAVStr[i]);
         strcat(strB, comma);
     }
     strcat(strB, assignmentAVStr[5]);
     strcat(strB, newLine);
-
 }
 
-int main() {
+int main()
+{
     int newFile;
     open("average.csv", O_CREAT, S_IRWXU);
     newFile = open("average.csv", O_RDWR);
-    char *strA = (char *) calloc(1000, 1);
-    char *strB = (char *) calloc(1000, 1);
+    char *strA = (char *)calloc(1000, 1);
+    char *strB = (char *)calloc(1000, 1);
     int id = fork();
-    if (id != 0) {
+    if (id != 0)
+    {
         waitpid(id, NULL, 0);
     }
-    if (id != 0) {
+    if (id != 0)
+    {
         getAverageSectionB(strB);
         write(newFile, strB, strlen(strB));
         printf("Averages written to average.csv file newly created\n");
-
-    } else {
+    }
+    else
+    {
         getAverageSectionA(strA);
         write(newFile, strA, strlen(strA));
         exit(0);
