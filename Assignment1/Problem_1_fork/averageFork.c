@@ -64,13 +64,13 @@ void getAverageSectionA(char *strA) {
         sprintf(assignmentAVStr[i], "%0.2f", averageArr[i]);
     }
 
-    for (int i = 0; i < 6; ++i) {
-        printf("The Section A average of Assignment ");
-        printf("%d ", i + 1);
-        printf("is ");
-        printf("%s", assignmentAVStr[i]);
-        printf("\n");
-    }
+    // for (int i = 0; i < 6; ++i) {
+    //     printf("The Section A average of Assignment ");
+    //     printf("%d ", i + 1);
+    //     printf("is ");
+    //     printf("%s", assignmentAVStr[i]);
+    //     printf("\n");
+    // }
     char newLine[10] = "\n";
     char comma[20] = ",";
     char Section[90] = "Section,Assignment 1,Assignment 2,Assignment 3,Assignment 4,Assignment 5,Assignment 6\nA,";
@@ -139,13 +139,13 @@ void getAverageSectionB(char *strB) {
         sprintf(assignmentAVStr[i], "%0.2f", averageArr[i]);
     }
 
-    for (int i = 0; i < 6; ++i) {
-        printf("The Section B average of Assignment ");
-        printf("%d ", i + 1);
-        printf("is ");
-        printf("%s", assignmentAVStr[i]);
-        printf("\n");
-    }
+    // for (int i = 0; i < 6; ++i) {
+    //     printf("The Section B average of Assignment ");
+    //     printf("%d ", i + 1);
+    //     printf("is ");
+    //     printf("%s", assignmentAVStr[i]);
+    //     printf("\n");
+    // }
 
     char newLine[10] = "\n";
     char comma[20] = ",";
@@ -155,6 +155,7 @@ void getAverageSectionB(char *strB) {
         strcat(strB, comma);
     }
     strcat(strB, assignmentAVStr[5]);
+    strcat(strB, newLine);
 
 }
 
@@ -171,7 +172,7 @@ int main() {
     if (id != 0) {
         getAverageSectionB(strB);
         write(newFile, strB, strlen(strB));
-        printf("Averages written to average.csv file newly created");
+        printf("Averages written to average.csv file newly created\n");
 
     } else {
         getAverageSectionA(strA);
