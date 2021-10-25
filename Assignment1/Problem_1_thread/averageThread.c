@@ -56,8 +56,6 @@ void *getAverageSectionA(void *str)
         
     }
 end:;
-    printf("%d\n",rowCounter);
-    printf("%s\n",dataStrLine[3]);
     for (int i = 1; i < rowCounter; ++i)
     {
         char tokenData[100][100];
