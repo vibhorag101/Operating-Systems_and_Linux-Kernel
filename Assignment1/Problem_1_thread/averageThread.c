@@ -30,6 +30,7 @@ void *getAverageSectionA(void *str)
     int rowCounter = 0;
     while (1)
     {
+        int flag=0;
         while (1)
         {
             readerByte = read(openFile, myBuf, 1);
@@ -37,19 +38,26 @@ void *getAverageSectionA(void *str)
             {
                 goto end;
             }
-            else if (myBuf[0] == '\n')
+            else if (myBuf[0] == '\n' || myBuf[0]==13)
             {
                 break;
             }
             else
             {
                 strcat(dataStrLine[rowCounter], myBuf);
+                flag=1;
             }
         }
-        rowCounter++;
+        if (flag==1)
+        {
+            rowCounter++;
+        }
+        
+        
     }
 end:;
-
+    printf("%d\n",rowCounter);
+    printf("%s\n",dataStrLine[3]);
     for (int i = 1; i < rowCounter; ++i)
     {
         char tokenData[100][100];
@@ -122,6 +130,7 @@ void *getAverageSectionB(void *str)
     int rowCounter = 0;
     while (1)
     {
+        int flag = 0;
         while (1)
         {
             readerByte = read(openFile, myBuf, 1);
@@ -129,16 +138,20 @@ void *getAverageSectionB(void *str)
             {
                 goto end;
             }
-            else if (myBuf[0] == '\n')
+            else if (myBuf[0] == '\n' || myBuf[0]==13)
             {
                 break;
             }
             else
             {
                 strcat(dataStrLine[rowCounter], myBuf);
+                flag = 1;
             }
         }
-        rowCounter++;
+        if (flag == 1)
+        {
+            rowCounter++;
+        }
     }
 end:;
 
