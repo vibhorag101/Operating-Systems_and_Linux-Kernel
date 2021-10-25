@@ -210,6 +210,7 @@ int main()
     {
         getAverageSectionA(strA);
         write(newFile, strA, strlen(strA));
-        exit(0);
+        // exit(0);
+        _exit(0);
     }
 }
