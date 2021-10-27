@@ -23,7 +23,6 @@ void funcB(char binString[100]){
     register char *arg2 asm("rsi") = charBin;
     asm("mov $1, %rax; mov $1, %rdi; mov $14, %rdx; syscall;");
     printf("Modifying the function Stack\n");
-    // stackModify();
     modifyStack();
     return;
 }
