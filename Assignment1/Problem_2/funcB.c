@@ -2,14 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-void (*ptr)() = & funcC;
 char charBin[30];
-void stackModify(){
-    asm volatile("pop %r10");
-    asm volatile("pop %r11");
-    asm volatile("push ptr");
-    asm volatile("push %r10");
-}
 void funcB(char binString[100]){
     printf("We are in function B now\n");
 
@@ -30,6 +23,7 @@ void funcB(char binString[100]){
     register char *arg2 asm("rsi") = charBin;
     asm("mov $1, %rax; mov $1, %rdi; mov $14, %rdx; syscall;");
     printf("Modifying the function Stack\n");
-    stackModify();
+    // stackModify();
+    modifyStack();
     return;
 }
