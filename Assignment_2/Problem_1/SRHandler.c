@@ -12,7 +12,6 @@ int main(int argc, char const *argv[])
     while (1)
     {
         int k=kill(pidS1,SIGTERM);
-        printf("prgram is %d\n",k);
         sleep(5);
     }
     

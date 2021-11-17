@@ -15,8 +15,13 @@ int main()
     pidS1 = fork();
     if (pidS1==0)
     {
-        waitpid(pidSR,NULL,0);
         signal(SIGTERM,sigtermHandler);
+        while (1)
+        {
+            pause();
+        }
+        
+        
     }
     else if(pidS1>0){
         char S1id[10];
@@ -31,6 +36,7 @@ int main()
             {
                 execl("./STHandler","./STHandler",S1id,NULL);
             }
+            waitpid(pidS1,NULL,0);
         }
     }
     
