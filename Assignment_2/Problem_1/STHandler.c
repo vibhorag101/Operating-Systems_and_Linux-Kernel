@@ -6,11 +6,19 @@
 #include <errno.h>
 #include <sys/time.h>
 #include "external.h"
+#include <stdint.h>
+#include <inttypes.h>
 #define INTERVAL 4000
-unsigned c,d;
 int randTime;
 pid_t pidS1 =-1;
 void alarmHandler();
+uint64_t rdtsc () {
+unsigned int lo , hi ;
+__asm__ __volatile__ ( " rdtsc " : "=a " ( lo ) , "=d " ( hi ) ) ;
+return (( uint64_t ) hi << 32) | (uint64_t)lo ;
+}
+
+
 int main(int argc, char const *argv[])
 {
     struct itimerval SRTimer;
@@ -29,8 +37,12 @@ int main(int argc, char const *argv[])
     return 0;
 }
 void alarmHandler(){
-    asm volatile("rdtsc" : "=a" (c), "=d" (d));
-    asm("mov %rax, randTime");
-    printf("Alarm form ST %d\n",c);
+    // asm("mov %rax, randTime");
+    uint64_t myTime = rdtsc();
+    // sleep(5);
+    // uint64_t myTime2 = rdtsc();
+    uint64_t elapsedTime = (myTime)/(2400000000);
+    printf("Alarm form ST\n");
+    printf("%" PRIu64 "\n", elapsedTime);
     kill(pidS1,SIGTERM);
 }
