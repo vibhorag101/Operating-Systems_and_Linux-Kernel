@@ -43,5 +43,5 @@ int main()
     return 0;
 }
 void sigtermHandler(){
-    printf("We received a SIGTERM CALL\n");
+    printf("S1 received a SIGTERM CALL\n");
 }

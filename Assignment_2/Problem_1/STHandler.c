@@ -5,7 +5,6 @@
 #include <signal.h>
 #include <errno.h>
 #include <sys/time.h>
-#include "external.h"
 #include <stdint.h>
 #include <inttypes.h>
 #define INTERVAL 4000
@@ -45,6 +44,6 @@ void alarmHandler(){
     char timeStr[500];
     sprintf(timeStr,"Time Since Computer Started %d Hours %d Minutes %d Seconds",elapsedHour,elapasedMin,elapsedSec);
     printf("Alarm form ST\n");
-    printf("%s\n",timeStr);
     kill(pidS1,SIGTERM);
+    printf("%s\n",timeStr);
 }

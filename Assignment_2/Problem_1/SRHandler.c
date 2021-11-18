@@ -30,7 +30,7 @@ void alarmHandler(){
 
     asm("RDRAND %rax");
     asm("mov %rax, randomNum");
-    printf("Alarm from SR %d\n",randomNum);
     kill(pidS1,SIGTERM);
+    printf("Random Number: %u\n",randomNum);
 
 }
