@@ -5,7 +5,8 @@
 #include <signal.h>
 #include <errno.h>
 #include <sys/time.h>
-#define INTERVAL 500
+#include "external.h"
+#define INTERVAL 4000
 pid_t pidS1 =-1;
 void alarmHandler();
 int main(int argc, char const *argv[])
