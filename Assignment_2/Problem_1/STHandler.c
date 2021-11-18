@@ -37,12 +37,14 @@ int main(int argc, char const *argv[])
     return 0;
 }
 void alarmHandler(){
-    // asm("mov %rax, randTime");
     uint64_t myTime = rdtsc();
-    // sleep(5);
-    // uint64_t myTime2 = rdtsc();
     uint64_t elapsedTime = (myTime)/(2400000000);
+    int elapsedHour= elapsedTime/3600;
+    int elapasedMin = (elapsedTime%3600)/60;
+    int elapsedSec = (elapsedTime%3600)%60;
+    char timeStr[500];
+    sprintf(timeStr,"Time Since Computer Started %d Hours %d Minutes %d Seconds",elapsedHour,elapasedMin,elapsedSec);
     printf("Alarm form ST\n");
-    printf("%" PRIu64 "\n", elapsedTime);
+    printf("%s\n",timeStr);
     kill(pidS1,SIGTERM);
 }
