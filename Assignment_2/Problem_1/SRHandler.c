@@ -8,6 +8,7 @@
 #define INTERVAL 2000
 pid_t pidS1 =-1;
 void alarmHandler();
+int randomNum;
 int main(int argc, char const *argv[])
 {
     struct itimerval SRTimer;
@@ -26,7 +27,10 @@ int main(int argc, char const *argv[])
     return 0;
 }
 void alarmHandler(){
-    printf("Alarm from SR\n");
+
+    asm("RDRAND %rax");
+    asm("mov %rax, randomNum");
+    printf("Alarm from SR %d\n",randomNum);
     kill(pidS1,SIGTERM);
 
 }

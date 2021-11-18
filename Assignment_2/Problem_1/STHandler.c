@@ -7,6 +7,8 @@
 #include <sys/time.h>
 #include "external.h"
 #define INTERVAL 4000
+unsigned c,d;
+int randTime;
 pid_t pidS1 =-1;
 void alarmHandler();
 int main(int argc, char const *argv[])
@@ -27,7 +29,8 @@ int main(int argc, char const *argv[])
     return 0;
 }
 void alarmHandler(){
-    printf("Alarm form ST\n");
+    asm volatile("rdtsc" : "=a" (c), "=d" (d));
+    asm("mov %rax, randTime");
+    printf("Alarm form ST %d\n",c);
     kill(pidS1,SIGTERM);
-
 }
