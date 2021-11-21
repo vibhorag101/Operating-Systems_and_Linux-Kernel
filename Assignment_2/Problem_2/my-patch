@@ -1,0 +1,25 @@
+diff -urN linux/arch/x86/entry/syscalls/syscall_64.tbl linux-5.14.6/arch/x86/entry/syscalls/syscall_64.tbl
+--- linux/arch/x86/entry/syscalls/syscall_64.tbl	2021-11-21 19:43:45.546716359 +0530
++++ linux-5.14.6/arch/x86/entry/syscalls/syscall_64.tbl	2021-09-18 17:14:05.000000000 +0530
+@@ -369,7 +369,6 @@
+ 445	common	landlock_add_rule	sys_landlock_add_rule
+ 446	common	landlock_restrict_self	sys_landlock_restrict_self
+ 447	common	memfd_secret		sys_memfd_secret
+-449 common  kernel_2d_memcpy    sys_kernel_2d_memcpy
+ 
+ #
+ # Due to a historical design error, certain syscalls are numbered differently
+diff -urN linux/kernel/sys.c linux-5.14.6/kernel/sys.c
+--- linux/kernel/sys.c	2021-11-21 19:41:34.800047267 +0530
++++ linux-5.14.6/kernel/sys.c	2021-09-18 17:14:05.000000000 +0530
+@@ -2732,10 +2732,3 @@
+ 	return 0;
+ }
+ #endif /* CONFIG_COMPAT */
+-SYSCALL_DEFINE3(kernel_2d_memcpy,void*,src,void*,dst,unsigned long,dataSize)
+-{
+-	float kernArr[8][8];
+-	unsigned long a =__copy_from_user((void*)kernArr,src,dataSize);
+-	unsigned long b =__copy_to_user(dst,(void*)kernArr,dataSize);
+-	return (a+b);
+-}

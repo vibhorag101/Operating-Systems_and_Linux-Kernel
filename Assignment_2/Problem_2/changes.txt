@@ -23,3 +23,4 @@ sudo cp System.map System.map-5.14.6
 sudo mkinitcpio -k 5.14.6 -g /boot/initramfs-linux-5.14.6.img
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 sudo reboot
+patch -p1 -R <../my-patch
