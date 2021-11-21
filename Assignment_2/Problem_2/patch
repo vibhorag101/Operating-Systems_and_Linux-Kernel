@@ -1,6 +1,6 @@
-diff -urN linux/arch/x86/entry/syscalls/syscall_64.tbl linux-5.14.6/arch/x86/entry/syscalls/syscall_64.tbl
---- linux/arch/x86/entry/syscalls/syscall_64.tbl	2021-11-21 19:43:45.546716359 +0530
-+++ linux-5.14.6/arch/x86/entry/syscalls/syscall_64.tbl	2021-09-18 17:14:05.000000000 +0530
+diff -urN linux/arch/x86/entry/syscalls/syscall_64.tbl linux-5.14.3/arch/x86/entry/syscalls/syscall_64.tbl
+--- linux/arch/x86/entry/syscalls/syscall_64.tbl	2021-11-21 23:05:16.243383681 +0530
++++ linux-5.14.3/arch/x86/entry/syscalls/syscall_64.tbl	2021-09-12 12:31:00.000000000 +0530
 @@ -369,7 +369,6 @@
  445	common	landlock_add_rule	sys_landlock_add_rule
  446	common	landlock_restrict_self	sys_landlock_restrict_self
@@ -9,10 +9,10 @@ diff -urN linux/arch/x86/entry/syscalls/syscall_64.tbl linux-5.14.6/arch/x86/ent
  
  #
  # Due to a historical design error, certain syscalls are numbered differently
-diff -urN linux/kernel/sys.c linux-5.14.6/kernel/sys.c
---- linux/kernel/sys.c	2021-11-21 19:41:34.800047267 +0530
-+++ linux-5.14.6/kernel/sys.c	2021-09-18 17:14:05.000000000 +0530
-@@ -2732,10 +2732,3 @@
+diff -urN linux/kernel/sys.c linux-5.14.3/kernel/sys.c
+--- linux/kernel/sys.c	2021-11-21 23:06:15.060051366 +0530
++++ linux-5.14.3/kernel/sys.c	2021-09-12 12:31:00.000000000 +0530
+@@ -2732,11 +2732,3 @@
  	return 0;
  }
  #endif /* CONFIG_COMPAT */
@@ -23,3 +23,4 @@ diff -urN linux/kernel/sys.c linux-5.14.6/kernel/sys.c
 -	unsigned long b =__copy_to_user(dst,(void*)kernArr,dataSize);
 -	return (a+b);
 -}
+-

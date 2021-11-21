@@ -1,9 +1,9 @@
 The following changes are made to the linux kernel to implement a custom system call
 
-1. In linux-5.14.6/arch/x86/entry/syscalls/syscall_64.tbl file we add the following line
+1. In linux-5.14.3/arch/x86/entry/syscalls/syscall_64.tbl file we add the following line
 449 common  kernel_2d_memcpy    sys_kernel_2d_memcpy
 
-2. In linux-5.14.6/kernel/sys.c we add the following code
+2. In linux-5.14.3/kernel/sys.c we add the following code
 
 SYSCALL_DEFINE3(kernel_2d_memcpy,void*,src,void*,dst,unsigned long,dataSize)
 {
@@ -14,13 +14,13 @@ SYSCALL_DEFINE3(kernel_2d_memcpy,void*,src,void*,dst,unsigned long,dataSize)
 }
 
 Now to compile the kernel we give the following steps inside the linux kernel folder
-We assume we are using linux-5.14.6 in this case.
+We assume we are using linux-5.14.3 in this case.
 Replace linux version accordingly in the commands
 make
 sudo make modules_install
-sudo cp  arch/x86_64/boot/bzImage /boot/vmlinuz-linux-5.14.6
-sudo cp System.map System.map-5.14.6
-sudo mkinitcpio -k 5.14.6 -g /boot/initramfs-linux-5.14.6.img
+sudo cp  arch/x86_64/boot/bzImage /boot/vmlinuz-linux-5.14.3
+sudo cp System.map System.map-5.14.3
+sudo mkinitcpio -k 5.14.3 -g /boot/initramfs-linux-5.14.3.img
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 sudo reboot
-patch -p1 -R <../my-patch
+patch -p1 -R <../patch
