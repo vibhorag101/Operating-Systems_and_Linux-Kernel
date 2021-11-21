@@ -12,6 +12,8 @@ SYSCALL_DEFINE3(kernel_2d_memcpy,void*,src,void*,dst,unsigned long,dataSize)
 	unsigned long b =__copy_to_user(dst,(void*)kernArr,dataSize);
 	return (a+b);
 }
+The patch can be applied by following command:
+patch -p1 -R <../patch
 
 Now to compile the kernel we give the following steps inside the linux kernel folder
 We assume we are using linux-5.14.3 in this case.
@@ -23,4 +25,3 @@ sudo cp System.map System.map-5.14.3
 sudo mkinitcpio -k 5.14.3 -g /boot/initramfs-linux-5.14.3.img
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 sudo reboot
-patch -p1 -R <../patch
