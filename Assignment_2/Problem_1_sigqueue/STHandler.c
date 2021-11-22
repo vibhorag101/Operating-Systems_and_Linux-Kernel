@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
+#include <bits/types.h>
 #include <unistd.h>
 #include <signal.h>
 #include <errno.h>
 #include <sys/time.h>
 #include <stdint.h>
 #include <inttypes.h>
-#include <bits/types.h>
 #define INTERVAL 4000
 int randTime;
 pid_t pidS1 =-1;
@@ -36,14 +35,9 @@ int main(int argc, char const *argv[])
     return 0;
 }
 void alarmHandler(){
-    uint64_t myTime = rdtsc();
-    uint64_t elapsedTime = (myTime)/(2400000000);
-    int elapsedHour= elapsedTime/3600;
-    int elapasedMin = (elapsedTime%3600)/60;
-    int elapsedSec = (elapsedTime%3600)%60;
-    char timeStr[500];
-    sprintf(timeStr,"Time Since Computer Started %d Hours %d Minutes %d Seconds",elapsedHour,elapasedMin,elapsedSec);
-    printf("Alarm form ST\n");
-    kill(pidS1,SIGTERM);
-    printf("%s\n",timeStr);
+    uint64_t totalClock = rdtsc();
+    int elapsedTime = (totalClock)/(2400000000);
+    union sigval data;
+    data.sival_int = elapsedTime;
+    sigqueue(pidS1,SIGTERM,data);
 }

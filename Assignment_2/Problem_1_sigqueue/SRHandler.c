@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include <signal.h>
 #include <errno.h>
 #include <sys/time.h>
-#include <bits/types/sigval_t.h>
+#include <bits/types.h>
 #define INTERVAL 2000
 pid_t pidS1 =-1;
 void alarmHandler();
@@ -27,11 +26,9 @@ int main(int argc, char const *argv[])
     return 0;
 }
 void alarmHandler(){
-    
     union sigval data;
     asm("RDRAND %rax");
     asm("mov %rax, randomNum");
-    kill(pidS1,SIGTERM);
-    printf("Random Number: %u\n",randomNum);
-
+    data.sival_int = randomNum;
+    sigqueue(pidS1,SIGTERM,data);
 }
