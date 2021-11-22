@@ -52,7 +52,7 @@ void sigtermHandler(int sig, siginfo_t *info, void *ptr)
 {
     int randNum = info->si_value.sival_int;
     int elapsedTime = info->si_value.sival_int;
-    printf("S1 received a SIGTERM CALL\n");
+    printf("S1 received a SIGTERM SIGNAL\n");
     if (abs(elapsedTime) < 1000000)
     {
         int elapsedHour = elapsedTime / 3600;
