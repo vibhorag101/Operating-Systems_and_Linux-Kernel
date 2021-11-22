@@ -7,3 +7,5 @@ SRHandler: SRHandler.c
 STHandler: STHandler.c
 	gcc STHandler.c -no-pie -o STHandler
 
+clean:
+	rm main SRHandler STHandler
