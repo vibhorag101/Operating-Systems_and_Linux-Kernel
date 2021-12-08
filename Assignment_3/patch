@@ -1,0 +1,44 @@
+diff -uNr linux-base/arch/x86/entry/syscalls/syscall_64.tbl linux-m/arch/x86/entry/syscalls/syscall_64.tbl
+--- linux-base/arch/x86/entry/syscalls/syscall_64.tbl	2021-09-12 12:31:00.000000000 +0530
++++ linux-m/arch/x86/entry/syscalls/syscall_64.tbl	2021-12-08 16:00:13.989930883 +0530
+@@ -369,7 +369,7 @@
+ 445	common	landlock_add_rule	sys_landlock_add_rule
+ 446	common	landlock_restrict_self	sys_landlock_restrict_self
+ 447	common	memfd_secret		sys_memfd_secret
+-
++449 common  delayProcess        sys_delayProcess
+ #
+ # Due to a historical design error, certain syscalls are numbered differently
+ # in x32 as compared to native x86_64.  These syscalls have numbers 512-547.
+diff -uNr linux-base/kernel/sched/fair.c linux-m/kernel/sched/fair.c
+--- linux-base/kernel/sched/fair.c	2021-09-12 12:31:00.000000000 +0530
++++ linux-m/kernel/sched/fair.c	2021-12-08 16:01:05.216595729 +0530
+@@ -543,8 +543,10 @@
+ /*
+  * Enqueue an entity into the rb-tree:
+  */
++static struct cfs_rq* cfsStatic;
+ static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ {
++	cfsStatic = cfs_rq;
+ 	rb_add_cached(&se->run_node, &cfs_rq->tasks_timeline, __entity_less);
+ }
+ 
+@@ -11679,3 +11681,16 @@
+         return rq ? rq->nr_running : -1;
+ }
+ EXPORT_SYMBOL_GPL(sched_trace_rq_nr_running);
++SYSCALL_DEFINE4(delayProcess,int,delay,int,pid,u64 *,timeSlice,unsigned long ,dataSize){
++	int a =0;
++	u64 temp;
++	if (current->pid == pid)
++	{
++		struct sched_entity *curr = cfsStatic->curr;
++		curr->vruntime += delay;
++		update_min_vruntime(cfsStatic);
++		temp = sched_slice(cfsStatic,curr);
++		a= __copy_to_user((void *)timeSlice, (void *)temp,dataSize);
++	}
++	return(a);
++}
+\ No newline at end of file
