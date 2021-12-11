@@ -41,20 +41,12 @@ int main()
 
     char toBeSent[5][5];
     int indexArr[5];
-    if (mkfifo("fifoString", 0777) == -1)
-    {
-        printf("Error making a fifo\n");
-    }
-    if (mkfifo("fifoIndex", 0777) == -1)
-    {
-        printf("Error making a fifo\n");
-    }
-
+    mkfifo("fifoString", 0777);
+    mkfifo("fifoIndex", 0777);
     {
         int fd = open("fifoString", O_WRONLY);
         getCharArrays(5, toBeSent, stringArray, indexArr);
         write(fd, toBeSent, sizeof(char) * 25);
-        write(fd, indexArr, sizeof(int) * 5);
         close(fd);
         int fd2 = open("fifoIndex", O_WRONLY);
         write(fd2, indexArr, sizeof(int) * 5);
@@ -68,7 +60,6 @@ int main()
         fd = open("fifoString", O_WRONLY);
         getCharArrays(receivedIndex + 1, toBeSent, stringArray, indexArr);
         write(fd, toBeSent, sizeof(char) * 25);
-        write(fd, indexArr, sizeof(int) * 5);
         close(fd);
         fd2 = open("fifoIndex", O_WRONLY);
         write(fd2, indexArr, sizeof(int) * 5);
