@@ -9,6 +9,8 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
+#include<sys/wait.h>
+#include<unistd.h>
 void getCharArrays(int Index, char toBeSent[5][5], char stringArray[50][5], int indexArr[])
 {
     int j = 0;
@@ -42,7 +44,7 @@ struct queueData
     long index;
     char mString[5];
 };
-void sendMessage(int msgid, char stringArray[50][5], int index)
+int sendMessage(int msgid, char stringArray[50][5], int index)
 {
     char toBeSent[5][5];
     int indexArr[5];
@@ -55,12 +57,33 @@ void sendMessage(int msgid, char stringArray[50][5], int index)
         msgsnd(msgid, (void *)&data, 10, 0);
     }
 }
+int getIndex(int msgid){
+    struct queueData data;
+    msgrcv(msgid,(void*)&data,5,0,0);
+    return(data.index);
+}
 
-int main()
+int main(int argc, char const *argv[])
 {
     char stringArray[50][5] = {{0}};
     randomStringGenerator(stringArray);
     int msgid = msgget((key_t)12345, 0666 | IPC_CREAT);
     sendMessage(msgid, stringArray, 5);
+
+    usleep(300000);
+    msgid = msgget((key_t)12345, 0666 | IPC_CREAT);
+    int recievedIndex = getIndex(msgid);
+    printf("The received index from P2 is %d\n",recievedIndex);
+    msgctl(msgid, IPC_RMID, NULL);
+
+    msgid = msgget((key_t)12345, 0666 | IPC_CREAT);
+    sendMessage(msgid, stringArray, recievedIndex+1);
+    usleep(300000);
+    msgid = msgget((key_t)12345, 0666 | IPC_CREAT);
+    recievedIndex = getIndex(msgid);
+    printf("The received index from P2 is %d\n",recievedIndex);
+    msgctl(msgid, IPC_RMID, NULL);
+
     return 0;
 }
+

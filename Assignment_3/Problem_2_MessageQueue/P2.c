@@ -9,6 +9,8 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
+#include<sys/wait.h>
+#include<unistd.h>
 struct queueData
 {
     long index;
@@ -44,9 +46,24 @@ int getMessage(int msgid){
     printIndexArray(indexArray);
     return(indexArray[4]);
 }
-int main()
+void sendIndex(int msgid,int Index){
+    struct queueData data;
+    data.index = Index;
+    msgsnd(msgid,(void*)&data,5,0);
+}
+int main(int argc, char const *argv[])
 {
     int msgid = msgget((key_t)12345, 0666 | IPC_CREAT);
-    getMessage(msgid);
+    int Index = getMessage(msgid);
+    msgctl(msgid, IPC_RMID, NULL);
+    msgid = msgget((key_t)12345, 0666 | IPC_CREAT);
+    sendIndex(msgid,Index);
+    usleep(400000);
+    msgid = msgget((key_t)12345, 0666 | IPC_CREAT);
+    Index = getMessage(msgid);
+    msgctl(msgid, IPC_RMID, NULL);
+    msgid = msgget((key_t)12345, 0666 | IPC_CREAT);
+    sendIndex(msgid,Index);
+    
     return 0;
 }
