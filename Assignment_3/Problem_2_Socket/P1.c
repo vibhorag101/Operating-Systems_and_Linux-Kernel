@@ -93,7 +93,7 @@ int main(int argc, char const *argv[])
     {
 
         struct myData data1 = messageStructure(stringArray, toBeSent, indexArr, 5);
-        write(sock, (void *)&data1, 100);
+        write(sock, (void *)&data1, 52);
     }
 
     close(msgsock);

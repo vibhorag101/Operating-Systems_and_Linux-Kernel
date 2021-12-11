@@ -61,7 +61,7 @@ int main(int argc, char const *argv[])
         exit(1);
     }
     struct myData data1;
-    read(sock,(void*)&data1,100);
+    read(sock,(void*)&data1,52);
     printCharArray(data1.stringArray);
     printIndexArray(data1.indexArray);
     Index = data1.indexArray[4];
