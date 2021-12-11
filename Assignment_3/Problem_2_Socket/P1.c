@@ -93,6 +93,7 @@ int main(int argc, char const *argv[])
     {
 
         struct myData data1 = messageStructure(stringArray, toBeSent, indexArr, 5);
+        printCharArray(data1.stringArray);
         write(sock, (void *)&data1, 52);
     }
 
