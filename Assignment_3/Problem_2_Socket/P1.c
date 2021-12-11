@@ -73,7 +73,8 @@ int main(int argc, char const *argv[])
     sock = socket(AF_UNIX, SOCK_STREAM, 0);
     if (sock < 0)
     {
-        perror("opening stream socket");
+        printf("Socket make failed\n");
+        unlink(NAME);
         exit(1);
     }
     server.sun_family = AF_UNIX;
@@ -83,6 +84,7 @@ int main(int argc, char const *argv[])
     if (bind(sock, (struct sockaddr *)&server, sizeof(struct sockaddr_un)))
     {
         perror("binding stream socket");
+        unlink(NAME);
         exit(1);
     }
     listen(sock, 5);
@@ -94,7 +96,7 @@ int main(int argc, char const *argv[])
 
         struct myData data1 = messageStructure(stringArray, toBeSent, indexArr, 5);
         printCharArray(data1.stringArray);
-        write(sock, (void *)&data1, 52);
+        write(msgsock, (void *)&data1, 52);
     }
 
     close(msgsock);
