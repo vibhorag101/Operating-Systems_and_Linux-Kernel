@@ -87,8 +87,10 @@ int main(int argc, char const *argv[])
         unlink(NAME);
         exit(1);
     }
+    int option = 1;
     listen(sock, 5);
     msgsock = accept(sock, 0, 0);
+    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
     if (msgsock == -1)
         perror("accept");
     else
