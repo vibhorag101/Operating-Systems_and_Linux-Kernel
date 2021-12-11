@@ -66,8 +66,6 @@ int main(int argc, char const *argv[])
     int sock, msgsock, rval;
     struct sockaddr_un server;
 
-
-    // creating a new socket
     sock = socket(AF_UNIX, SOCK_STREAM, 0);
     if (sock < 0)
     {
@@ -77,7 +75,6 @@ int main(int argc, char const *argv[])
     server.sun_family = AF_UNIX;
     strcpy(server.sun_path, NAME);
 
-    // binding the socket to the file
     if (bind(sock, (struct sockaddr *)&server, sizeof(struct sockaddr_un)))
     {
         perror("binding stream socket");
@@ -89,7 +86,7 @@ int main(int argc, char const *argv[])
     msgsock = accept(sock, 0, 0);
     setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
     if (msgsock == -1)
-        perror("accept");
+        printf("Socket error\n");
     else
     {
 

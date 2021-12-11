@@ -37,13 +37,8 @@ int main(int argc, char const *argv[])
     int sock;
     struct sockaddr_un server;
 
-    // creating a buffer to read data
-    char buf[1024];
-
-    // creating a new socket
     sock = socket(AF_UNIX, SOCK_STREAM, 0);
 
-    // checking if an error occurred while creating a socket
     if (sock < 0)
     {
         perror("opening stream socket");
@@ -52,8 +47,6 @@ int main(int argc, char const *argv[])
     server.sun_family = AF_UNIX;
     strcpy(server.sun_path, "/tmp/sock");
 
-    // connecting to the socket created in the server
-    // the file name is used to specify the correct socket
     if (connect(sock, (struct sockaddr *)&server, sizeof(struct sockaddr_un)) < 0)
     {
         close(sock);
