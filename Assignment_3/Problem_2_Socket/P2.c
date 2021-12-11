@@ -65,8 +65,13 @@ int main(int argc, char const *argv[])
     printCharArray(data1.stringArray);
     printIndexArray(data1.indexArray);
     Index = data1.indexArray[4];
-    printf("The highest index is %d\n",Index);
+    write(sock,&Index,sizeof(int));
 
+    read(sock,(void*)&data1,52);
+    printCharArray(data1.stringArray);
+    printIndexArray(data1.indexArray);
+    Index = data1.indexArray[4];
+    write(sock,&Index,sizeof(int));
     close(sock);
     return (0);
 }

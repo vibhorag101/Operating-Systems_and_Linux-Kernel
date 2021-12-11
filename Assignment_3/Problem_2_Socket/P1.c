@@ -66,15 +66,12 @@ int main(int argc, char const *argv[])
     int sock, msgsock, rval;
     struct sockaddr_un server;
 
-    // creating a buffer to read data
-    char buf[1024];
 
     // creating a new socket
     sock = socket(AF_UNIX, SOCK_STREAM, 0);
     if (sock < 0)
     {
-        printf("Socket make failed\n");
-        unlink(NAME);
+        printf("Socket making failed\n");
         exit(1);
     }
     server.sun_family = AF_UNIX;
@@ -97,8 +94,15 @@ int main(int argc, char const *argv[])
     {
 
         struct myData data1 = messageStructure(stringArray, toBeSent, indexArr, 5);
-        printCharArray(data1.stringArray);
         write(msgsock, (void *)&data1, 52);
+        int receivedIndex;
+        read(msgsock,&receivedIndex,sizeof(int));
+        printf("The recieved index from P2 is %d\n",receivedIndex);
+        struct myData data2 = messageStructure(stringArray, toBeSent, indexArr, receivedIndex+1);
+        write(msgsock, (void *)&data2, 52);
+        read(msgsock,&receivedIndex,sizeof(int));
+        printf("The recieved index from P2 is %d\n",receivedIndex);
+
     }
 
     close(msgsock);
