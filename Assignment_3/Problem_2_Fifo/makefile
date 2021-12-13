@@ -9,4 +9,4 @@ P2: P2.c
 cleanFifo:
 	rm -f fifoString fifoIndex
 clean:
-	rm -f fifoString fifoIndex P1 P2
+	rm -f fifoString fifoIndex P1 P2 main
