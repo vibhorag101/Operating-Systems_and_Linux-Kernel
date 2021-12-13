@@ -1,0 +1,28 @@
+SYSCALL_DEFINE5(delayProcess,int,delay,int,pid,u_int64_t *,timeSliceEarlier,u_int64_t *,timeSliceAfter,unsigned long ,dataSize){
+	u_int64_t temp;
+	if (current->pid == pid)
+	{
+		struct sched_entity *curr = cfsStatic->curr;
+		temp = curr->vruntime;
+		if( __copy_to_user((void *)timeSliceEarlier, (void *)&temp,dataSize)!=0){
+			return(-1);
+		}
+		curr->vruntime += delay;
+		update_min_vruntime(cfsStatic);
+		temp = curr->vruntime;
+		if( __copy_to_user((void *)timeSliceAfter, (void *)&temp,dataSize)!=0){
+			return(-1);
+		}
+		return(0);
+	}
+	else{
+		return(-1);
+	}
+}
+
+static struct cfs_rq* cfsStatic;
+ static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ {
+	cfsStatic = cfs_rq;
+ 	rb_add_cached(&se->run_node, &cfs_rq->tasks_timeline, __entity_less);
+ }
