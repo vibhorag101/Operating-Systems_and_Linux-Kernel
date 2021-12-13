@@ -63,7 +63,7 @@ int main(int argc, char const *argv[])
     char toBeSent[5][5];
     int indexArr[5];
     int Index;
-    int sock, msgsock, rval;
+    int sock, msgsock;
     struct sockaddr_un server;
 
     sock = socket(AF_UNIX, SOCK_STREAM, 0);
