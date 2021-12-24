@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <syscall.h>
+#include <sys/syscall.h>
+#include <unistd.h>
 void writer(char myData[8]){
     
 }

@@ -1,10 +1,10 @@
-main:P Q
+main:P C
 
 P: P.c
 	gcc P.c -o P
 
-Q: Q.c
-	gcc Q.c -o Q
+Q: C.c
+	gcc C.c -o C
 	
 clean:
-	rm -rf P Q
+	rm -rf P C

@@ -1,93 +1,110 @@
-diff -uNr linux-base/arch/x86/entry/syscalls/syscall_64.tbl linux-a4/arch/x86/entry/syscalls/syscall_64.tbl
---- linux-base/arch/x86/entry/syscalls/syscall_64.tbl	2021-09-12 12:31:00.000000000 +0530
-+++ linux-a4/arch/x86/entry/syscalls/syscall_64.tbl	2021-12-24 17:46:22.473530018 +0530
-@@ -369,7 +369,8 @@
+diff -uNr linux-a4/arch/x86/entry/syscalls/syscall_64.tbl linux-base/arch/x86/entry/syscalls/syscall_64.tbl
+--- linux-a4/arch/x86/entry/syscalls/syscall_64.tbl	2021-12-24 19:16:46.323344716 +0530
++++ linux-base/arch/x86/entry/syscalls/syscall_64.tbl	2021-09-12 12:31:00.000000000 +0530
+@@ -369,9 +369,6 @@
  445	common	landlock_add_rule	sys_landlock_add_rule
  446	common	landlock_restrict_self	sys_landlock_restrict_self
  447	common	memfd_secret		sys_memfd_secret
--
-+448 common  writer          sys_writer
-+449 common  reader          sys_reader
+-448 common  writer          sys_writer
+-449 common  reader          sys_reader
+-450 common  queueMake       sys_queueMake
+ 
  #
  # Due to a historical design error, certain syscalls are numbered differently
- # in x32 as compared to native x86_64.  These syscalls have numbers 512-547.
-diff -uNr linux-base/kernel/sys.c linux-a4/kernel/sys.c
---- linux-base/kernel/sys.c	2021-09-12 12:31:00.000000000 +0530
-+++ linux-a4/kernel/sys.c	2021-12-24 17:37:34.730185028 +0530
-@@ -73,7 +73,7 @@
+diff -uNr linux-a4/kernel/sys.c linux-base/kernel/sys.c
+--- linux-a4/kernel/sys.c	2021-12-24 19:18:33.540013355 +0530
++++ linux-base/kernel/sys.c	2021-09-12 12:31:00.000000000 +0530
+@@ -71,8 +71,7 @@
+ #include <linux/uaccess.h>
+ #include <asm/io.h>
  #include <asm/unistd.h>
- 
+-#include <linux/mutex.h>
+-#include <linux/slab.h>
++
  #include "uid16.h"
--
-+#include <pthread.h>
+ 
  #ifndef SET_UNALIGN_CTL
- # define SET_UNALIGN_CTL(a, b)	(-EINVAL)
- #endif
-@@ -2732,3 +2732,67 @@
+@@ -2733,83 +2732,3 @@
  	return 0;
  }
  #endif /* CONFIG_COMPAT */
-+struct Queue {
-+	int size;
-+	int capacity;
-+	char *array;
-+	int front;
-+	int rear;
-+} struct Queue *createQueue(int capacity)
-+{
-+	struct Queue *queue =
-+		(struct Queue *)kmalloc(sizeof(struct Queue), __GFP_REPEAT);
-+	queue->capacity = capacity;
-+	queue->front = 0;
-+	queue->rear = 0;
-+	queue->array = (char *)kmalloc(capacity, __GFP_REPEAT);
-+	queue->size = 0;
-+	return (queue);
-+}
-+static void enqueue(struct Queue *queue, char item)
-+{
-+	if (queue->size != queue->capacity) {
-+		queue->array[queue->rear] = item;
-+		queue->rear = queue->rear + 1;
-+		queue->size = queue->size + 1;
-+	}
-+}
-+static char dequeue(struct Queue *queue)
-+{
-+	char returnElement;
-+	if (queue->size != 0) {
-+		returnElement = queue->array[queue->front];
-+		queue->front = queue->front + 1;
-+		queue->size = queue->size - 1;
-+	}
-+}
-+static Struct Queue *dataQueue;
-+static pthread_mutex_t dataMutex;
-+SYSCALL_DEFINE1(writer, void *, data)
-+{
-+	if (dataQueue == NULL) {
-+		dataQueue = createQueue(8);
-+	}
-+	if (dataMutex == null) {
-+		pthread_mutex_init(&dataMutex, NULL);
-+	}
-+	char kerData[8];
-+	int a = __copy_from_user((void *)kerData, data, 8);
-+	pthread_mutex_lock(&dataMutex);
-+	for (int i = 0; i < 8; i++) {
-+		enqueue(dataQueue, kerData[i]);
-+	}
-+	pthread_mutex_unlock(&dataMutex);
-+}
-+SYSCALL_DEFINE1(reader, void *, data)
-+{
-+	if (dataQueue != NULL) {
-+		char kerData[8];
-+		pthread_mutex_lock(&dataMutex);
-+		for (int i = 0; i < 8; i++) {
-+			kerData[8] = dequeue(dataQueue);
-+		}
-+		__copy_to_user(data, (void *)kerData, 8);
-+		pthread_mutex_unlock(&dataMutex);
-+	}
-+}
+-struct Queue {
+-	int size;
+-	int capacity;
+-	char *array;
+-	int front;
+-	int rear;
+-};
+- struct Queue *createQueue(int capacity)
+-{
+-	struct Queue *queue =
+-		(struct Queue *)kmalloc(sizeof(struct Queue),GFP_NOWAIT);
+-	queue->capacity = capacity;
+-	queue->front = 0;
+-	queue->rear = 0;
+-	queue->array = (char *)kmalloc(capacity,GFP_NOWAIT);
+-	queue->size = 0;
+-	return (queue);
+-}
+-static void enqueue(struct Queue *queue, char item)
+-{
+-	if (queue->size != queue->capacity) {
+-		queue->array[queue->rear] = item;
+-		queue->rear = queue->rear + 1;
+-		queue->size = queue->size + 1;
+-	}
+-}
+-static char dequeue(struct Queue *queue)
+-{
+-	char returnElement;
+-	if (queue->size != 0) {
+-		returnElement = queue->array[queue->front];
+-		queue->front = queue->front + 1;
+-		queue->size = queue->size - 1;
+-	}
+-	return(returnElement);
+-}
+-static struct Queue *dataQueue;
+-static struct mutex dataMutex;
+-SYSCALL_DEFINE0(queueMake){
+-	dataQueue = createQueue(8);
+-	mutex_init(&dataMutex);
+-	return(0);
+-}
+-SYSCALL_DEFINE1(writer, void *, data)
+-{
+-	int a;
+-	char kerData[8];
+-	a = __copy_from_user((void *)kerData, data, 8);
+-	mutex_lock(&dataMutex);
+-	enqueue(dataQueue, kerData[0]);
+-	enqueue(dataQueue, kerData[1]);
+-	enqueue(dataQueue, kerData[2]);
+-	enqueue(dataQueue, kerData[3]);
+-	enqueue(dataQueue, kerData[4]);
+-	enqueue(dataQueue, kerData[5]);
+-	enqueue(dataQueue, kerData[6]);
+-	enqueue(dataQueue, kerData[7]);
+-	mutex_unlock(&dataMutex);
+-	return(a);
+-}
+-SYSCALL_DEFINE1(reader, void *, data)
+-{
+-	int b;
+-	if (dataQueue != NULL) {
+-		char kerData[8];
+-		mutex_lock(&dataMutex);
+-		kerData[0] = dequeue(dataQueue);
+-		kerData[1] = dequeue(dataQueue);
+-		kerData[2] = dequeue(dataQueue);
+-		kerData[3] = dequeue(dataQueue);
+-		kerData[4] = dequeue(dataQueue);
+-		kerData[5] = dequeue(dataQueue);
+-		kerData[6] = dequeue(dataQueue);
+-		kerData[7] = dequeue(dataQueue);
+-		b =__copy_to_user(data, (void *)kerData, 8);
+-		mutex_unlock(&dataMutex);
+-	}
+-	return(b);
+-}
+-
