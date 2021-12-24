@@ -1,0 +1,93 @@
+diff -uNr linux-base/arch/x86/entry/syscalls/syscall_64.tbl linux-a4/arch/x86/entry/syscalls/syscall_64.tbl
+--- linux-base/arch/x86/entry/syscalls/syscall_64.tbl	2021-09-12 12:31:00.000000000 +0530
++++ linux-a4/arch/x86/entry/syscalls/syscall_64.tbl	2021-12-24 17:46:22.473530018 +0530
+@@ -369,7 +369,8 @@
+ 445	common	landlock_add_rule	sys_landlock_add_rule
+ 446	common	landlock_restrict_self	sys_landlock_restrict_self
+ 447	common	memfd_secret		sys_memfd_secret
+-
++448 common  writer          sys_writer
++449 common  reader          sys_reader
+ #
+ # Due to a historical design error, certain syscalls are numbered differently
+ # in x32 as compared to native x86_64.  These syscalls have numbers 512-547.
+diff -uNr linux-base/kernel/sys.c linux-a4/kernel/sys.c
+--- linux-base/kernel/sys.c	2021-09-12 12:31:00.000000000 +0530
++++ linux-a4/kernel/sys.c	2021-12-24 17:37:34.730185028 +0530
+@@ -73,7 +73,7 @@
+ #include <asm/unistd.h>
+ 
+ #include "uid16.h"
+-
++#include <pthread.h>
+ #ifndef SET_UNALIGN_CTL
+ # define SET_UNALIGN_CTL(a, b)	(-EINVAL)
+ #endif
+@@ -2732,3 +2732,67 @@
+ 	return 0;
+ }
+ #endif /* CONFIG_COMPAT */
++struct Queue {
++	int size;
++	int capacity;
++	char *array;
++	int front;
++	int rear;
++} struct Queue *createQueue(int capacity)
++{
++	struct Queue *queue =
++		(struct Queue *)kmalloc(sizeof(struct Queue), __GFP_REPEAT);
++	queue->capacity = capacity;
++	queue->front = 0;
++	queue->rear = 0;
++	queue->array = (char *)kmalloc(capacity, __GFP_REPEAT);
++	queue->size = 0;
++	return (queue);
++}
++static void enqueue(struct Queue *queue, char item)
++{
++	if (queue->size != queue->capacity) {
++		queue->array[queue->rear] = item;
++		queue->rear = queue->rear + 1;
++		queue->size = queue->size + 1;
++	}
++}
++static char dequeue(struct Queue *queue)
++{
++	char returnElement;
++	if (queue->size != 0) {
++		returnElement = queue->array[queue->front];
++		queue->front = queue->front + 1;
++		queue->size = queue->size - 1;
++	}
++}
++static Struct Queue *dataQueue;
++static pthread_mutex_t dataMutex;
++SYSCALL_DEFINE1(writer, void *, data)
++{
++	if (dataQueue == NULL) {
++		dataQueue = createQueue(8);
++	}
++	if (dataMutex == null) {
++		pthread_mutex_init(&dataMutex, NULL);
++	}
++	char kerData[8];
++	int a = __copy_from_user((void *)kerData, data, 8);
++	pthread_mutex_lock(&dataMutex);
++	for (int i = 0; i < 8; i++) {
++		enqueue(dataQueue, kerData[i]);
++	}
++	pthread_mutex_unlock(&dataMutex);
++}
++SYSCALL_DEFINE1(reader, void *, data)
++{
++	if (dataQueue != NULL) {
++		char kerData[8];
++		pthread_mutex_lock(&dataMutex);
++		for (int i = 0; i < 8; i++) {
++			kerData[8] = dequeue(dataQueue);
++		}
++		__copy_to_user(data, (void *)kerData, 8);
++		pthread_mutex_unlock(&dataMutex);
++	}
++}
