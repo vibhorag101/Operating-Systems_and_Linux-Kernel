@@ -2,18 +2,21 @@
 #include <stdlib.h>
 #include <sys/syscall.h>
 #include <unistd.h>
-void writer(char myData[8]){
-    
+void writer(char myData[8])
+{
 }
 int main()
 {
-    char myData[8];
-    syscall(449,myData);
-    for (int i = 0; i < 8; i++)
+    while (1)
     {
-        printf("recieved %d\n",myData[i]);
+        char myData[8];
+        syscall(449, myData);
+        for (int i = 0; i < 8; i++)
+        {
+            printf("C read %d\n", myData[i]);
+        }
+        sleep(2);
     }
 
-    
     return 0;
 }
