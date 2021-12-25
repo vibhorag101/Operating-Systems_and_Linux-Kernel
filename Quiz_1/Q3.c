@@ -13,7 +13,6 @@ int main()
     if ((pid1=fork())>0)
     {
         waitpid(pid1,NULL,0);
-        printf("waiting parent\n");
     }
     else if(pid1==0){
         execl("/usr/bin/bash","bash",NULL);
