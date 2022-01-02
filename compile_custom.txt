@@ -1,7 +1,7 @@
 make -j8
 sudo make modules_install
 sudo cp arch/x86_64/boot/bzImage /boot/vmlinuz-<linux_image_name>
-sudo mkinitcpio -k <linux_version> -g /boot/initramfs-<linux_image_name>
+sudo mkinitcpio -k <linux_version> -g /boot/initramfs-<linux_image_name>.img
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 
@@ -9,7 +9,7 @@ ie . to install a linux kernel as linux-a3(as shown in grub menu) having the sou
 make -j8
 sudo make modules_install
 sudo cp arch/x86_64/boot/bzImage /boot/vmlinuz-linux-a3
-sudo mkinitcpio -k 5.14.6 -g /boot/initramfs-linux-a3
+sudo mkinitcpio -k 5.14.6 -g /boot/initramfs-linux-a3.img
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 
@@ -18,5 +18,5 @@ ie . to install a linux kernel as linux-vibhor(as shown in grub menu) having the
 make -j8
 sudo make modules_install
 sudo cp arch/x86_64/boot/bzImage /boot/vmlinuz-linux-vibhor
-sudo mkinitcpio -k 5.15.3 -g /boot/initramfs-linux-a3
+sudo mkinitcpio -k 5.15.3 -g /boot/initramfs-linux-vibhor.img
 sudo grub-mkconfig -o /boot/grub/grub.cfg
