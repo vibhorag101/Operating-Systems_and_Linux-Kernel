@@ -20,6 +20,7 @@ The mini projects are based on the following topics.
 
 ## How to run the code
 Just run the following commands inside the subfolder having their own makefiles 
+
 Note : You need a `UNIX Shell` to execute these commands. If you are a windows guy you can use a `VM` or `WSL`
 ```
 make
