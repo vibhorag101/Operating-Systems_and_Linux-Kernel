@@ -16,7 +16,7 @@ The mini projects are based on the following topics.
 - ------ Assignment Code Files
 - --------Makefile
 - --- Problem Statement PDF
-- --- Deatiled ProjectReport of the Solution.
+- --- Detailed `readme.pdf` of the Solution.
 
 ## How to run the code
 Just run the following commands inside the subfolder having their own makefiles 
